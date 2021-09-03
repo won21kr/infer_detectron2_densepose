@@ -1,9 +1,7 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 from fvcore.common.file_io import PathManager
-
 from detectron2.data import MetadataCatalog
-
-from DensePose_git.densepose import DensePoseTransformData
+from Detectron2_DensePose.DensePose_git.densepose import DensePoseTransformData
 
 
 def load_for_dataset(dataset_name):

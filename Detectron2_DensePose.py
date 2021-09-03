@@ -1,6 +1,4 @@
 from ikomia import dataprocess
-import Detectron2_DensePose_process as processMod
-import Detectron2_DensePose_widget as widgetMod
 
 
 # --------------------
@@ -13,9 +11,11 @@ class Detectron2_DensePose(dataprocess.CPluginProcessInterface):
         dataprocess.CPluginProcessInterface.__init__(self)
 
     def getProcessFactory(self):
+        from Detectron2_DensePose.Detectron2_DensePose_process import Detectron2_DensePoseProcessFactory
         # Instantiate process object
-        return processMod.Detectron2_DensePoseProcessFactory()
+        return Detectron2_DensePoseProcessFactory()
 
     def getWidgetFactory(self):
+        from Detectron2_DensePose.Detectron2_DensePose_widget import Detectron2_DensePoseWidgetFactory
         # Instantiate associated widget object
-        return widgetMod.Detectron2_DensePoseWidgetFactory()
+        return Detectron2_DensePoseWidgetFactory()

@@ -1,7 +1,7 @@
 from ikomia import utils, core, dataprocess
-import Detectron2_DensePose_process as processMod
-
-#PyQt GUI framework
+from ikomia.utils import qtconversion
+from Detectron2_DensePose.Detectron2_DensePose_process import Detectron2_DensePoseParam
+# PyQt GUI framework
 from PyQt5.QtWidgets import *
 
 
@@ -9,18 +9,18 @@ from PyQt5.QtWidgets import *
 # - Class which implements widget associated with the process
 # - Inherits core.CProtocolTaskWidget from Ikomia API
 # --------------------
-class Detectron2_DensePoseWidget(core.CProtocolTaskWidget):
+class Detectron2_DensePoseWidget(core.CWorkflowTaskWidget):
 
     def __init__(self, param, parent):
-        core.CProtocolTaskWidget.__init__(self, parent)
+        core.CWorkflowTaskWidget.__init__(self, parent)
 
         if param is None:
-            self.parameters = processMod.Detectron2_DensePoseParam()
+            self.parameters = Detectron2_DensePoseParam()
         else:
             self.parameters = param
 
         # Create layout : QGridLayout by default
-        self.gridLayout = QGridLayout()
+        self.grid_layout = QGridLayout()
 
         # cuda parameter
         cuda_label = QLabel("CUDA")
@@ -37,20 +37,20 @@ class Detectron2_DensePoseWidget(core.CProtocolTaskWidget):
         if self.parameters.proba != 0.8:
             self.proba_spinbox.setValue(self.parameters.proba)
 
-        self.gridLayout.setColumnStretch(0,0)
-        self.gridLayout.addWidget(self.cuda_ckeck, 0, 0)
-        self.gridLayout.setColumnStretch(1,1)
-        self.gridLayout.addWidget(cuda_label, 0, 1)
-        self.gridLayout.addWidget(proba_label, 1, 0)
-        self.gridLayout.addWidget(self.proba_spinbox, 1, 1)
-        self.gridLayout.setColumnStretch(2,2)
+        self.grid_layout.setColumnStretch(0, 0)
+        self.grid_layout.addWidget(self.cuda_ckeck, 0, 0)
+        self.grid_layout.setColumnStretch(1, 1)
+        self.grid_layout.addWidget(cuda_label, 0, 1)
+        self.grid_layout.addWidget(proba_label, 1, 0)
+        self.grid_layout.addWidget(self.proba_spinbox, 1, 1)
+        self.grid_layout.setColumnStretch(2, 2)
 
         # Set widget layout
-        layout_ptr = utils.PyQtToQt(self.gridLayout)
+        layout_ptr = qtconversion.PyQtToQt(self.grid_layout)
         self.setLayout(layout_ptr)
 
-        if self.parameters.cuda == False:
-           self.cuda_ckeck.setChecked(False)
+        if not self.parameters.cuda:
+            self.cuda_ckeck.setChecked(False)
 
     def onApply(self):
         # Apply button clicked slot
@@ -58,14 +58,15 @@ class Detectron2_DensePoseWidget(core.CProtocolTaskWidget):
             self.parameters.cuda = True
         else:
             self.parameters.cuda = False
+
         self.parameters.proba = self.proba_spinbox.value()
         self.emitApply(self.parameters)
 
 
-#--------------------
-#- Factory class to build process widget object
-#- Inherits dataprocess.CWidgetFactory from Ikomia API
-#--------------------
+# --------------------
+# - Factory class to build process widget object
+# - Inherits dataprocess.CWidgetFactory from Ikomia API
+# --------------------
 class Detectron2_DensePoseWidgetFactory(dataprocess.CWidgetFactory):
 
     def __init__(self):
