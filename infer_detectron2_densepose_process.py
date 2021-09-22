@@ -1,4 +1,4 @@
-from Detectron2_DensePose import update_path
+from infer_detectron2_densepose import update_path
 from ikomia import core, dataprocess
 import copy
 import numpy as np
@@ -7,16 +7,17 @@ import os
 from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.structures.boxes import BoxMode
-from Detectron2_DensePose.DensePose_git.densepose.data.structures import DensePoseResult
-from Detectron2_DensePose.DensePose_git.densepose.config import add_densepose_config
-from Detectron2_DensePose.DensePose_git.densepose.data.structures import DensePoseDataRelative
+from infer_detectron2_densepose.DensePose_git.densepose.data.structures import DensePoseResult
+from infer_detectron2_densepose.DensePose_git.densepose.config import add_densepose_config
+from infer_detectron2_densepose.DensePose_git.densepose.data.structures import DensePoseDataRelative
 from matplotlib import pyplot as plt
+
 
 # --------------------
 # - Class to handle the process parameters
 # - Inherits core.CProtocolTaskParam from Ikomia API
 # --------------------
-class Detectron2_DensePoseParam(core.CWorkflowTaskParam):
+class DensePoseParam(core.CWorkflowTaskParam):
 
     def __init__(self):
         core.CWorkflowTaskParam.__init__(self)
@@ -33,18 +34,19 @@ class Detectron2_DensePoseParam(core.CWorkflowTaskParam):
         param_map["proba"] = str(self.proba)
         return param_map
 
+
 # --------------------
 # - Class which implements the process
 # - Inherits core.CProtocolTask or derived from Ikomia API
 # --------------------
-class Detectron2_DensePoseProcess(dataprocess.C2dImageTask):
+class DensePose(dataprocess.C2dImageTask):
 
     def __init__(self, name, param):
         dataprocess.C2dImageTask.__init__(self, name)
 
         # Create parameters class
         if param is None:
-            self.setParam(Detectron2_DensePoseParam())
+            self.setParam(DensePoseParam())
         else:
             self.setParam(copy.deepcopy(param))
         
@@ -317,12 +319,12 @@ class Detectron2_DensePoseProcess(dataprocess.C2dImageTask):
 # - Factory class to build process object
 # - Inherits dataprocess.CProcessFactory from Ikomia API
 # --------------------
-class Detectron2_DensePoseProcessFactory(dataprocess.CTaskFactory):
+class DensePoseFactory(dataprocess.CTaskFactory):
 
     def __init__(self):
         dataprocess.CTaskFactory.__init__(self)
         # Set process information as string here
-        self.info.name = "Detectron2_DensePose"
+        self.info.name = "infer_detectron2_densepose"
         self.info.shortDescription = "Detectron2 inference model for human pose detection."
         self.info.description = "Inference model for human pose detection trained on COCO dataset. " \
                                 "Implementation from Detectron2 (Facebook Research). " \
@@ -343,4 +345,4 @@ class Detectron2_DensePoseProcessFactory(dataprocess.CTaskFactory):
 
     def create(self, param=None):
         # Create process object
-        return Detectron2_DensePoseProcess(self.info.name, param)
+        return DensePose(self.info.name, param)

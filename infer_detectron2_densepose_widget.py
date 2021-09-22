@@ -1,6 +1,6 @@
 from ikomia import utils, core, dataprocess
 from ikomia.utils import qtconversion
-from Detectron2_DensePose.Detectron2_DensePose_process import Detectron2_DensePoseParam
+from infer_detectron2_densepose.infer_detectron2_densepose_process import DensePoseParam
 # PyQt GUI framework
 from PyQt5.QtWidgets import *
 
@@ -9,13 +9,13 @@ from PyQt5.QtWidgets import *
 # - Class which implements widget associated with the process
 # - Inherits core.CProtocolTaskWidget from Ikomia API
 # --------------------
-class Detectron2_DensePoseWidget(core.CWorkflowTaskWidget):
+class DensePoseWidget(core.CWorkflowTaskWidget):
 
     def __init__(self, param, parent):
         core.CWorkflowTaskWidget.__init__(self, parent)
 
         if param is None:
-            self.parameters = Detectron2_DensePoseParam()
+            self.parameters = DensePoseParam()
         else:
             self.parameters = param
 
@@ -67,13 +67,13 @@ class Detectron2_DensePoseWidget(core.CWorkflowTaskWidget):
 # - Factory class to build process widget object
 # - Inherits dataprocess.CWidgetFactory from Ikomia API
 # --------------------
-class Detectron2_DensePoseWidgetFactory(dataprocess.CWidgetFactory):
+class DensePoseWidgetFactory(dataprocess.CWidgetFactory):
 
     def __init__(self):
         dataprocess.CWidgetFactory.__init__(self)
         # Set the name of the process -> it must be the same as the one declared in the process factory class
-        self.name = "Detectron2_DensePose"
+        self.name = "infer_detectron2_densepose"
 
     def create(self, param):
         # Create widget object
-        return Detectron2_DensePoseWidget(param, None)
+        return DensePoseWidget(param, None)

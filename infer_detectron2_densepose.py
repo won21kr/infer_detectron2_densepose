@@ -5,17 +5,17 @@ from ikomia import dataprocess
 # - Interface class to integrate the process with Ikomia application
 # - Inherits PyDataProcess.CPluginProcessInterface from Ikomia API
 # --------------------
-class Detectron2_DensePose(dataprocess.CPluginProcessInterface):
+class IkomiaPlugin(dataprocess.CPluginProcessInterface):
 
     def __init__(self):
         dataprocess.CPluginProcessInterface.__init__(self)
 
     def getProcessFactory(self):
-        from Detectron2_DensePose.Detectron2_DensePose_process import Detectron2_DensePoseProcessFactory
+        from infer_detectron2_densepose.infer_detectron2_densepose_process import DensePoseFactory
         # Instantiate process object
-        return Detectron2_DensePoseProcessFactory()
+        return DensePoseFactory()
 
     def getWidgetFactory(self):
-        from Detectron2_DensePose.Detectron2_DensePose_widget import Detectron2_DensePoseWidgetFactory
+        from infer_detectron2_densepose.infer_detectron2_densepose_widget import DensePoseWidgetFactory
         # Instantiate associated widget object
-        return Detectron2_DensePoseWidgetFactory()
+        return DensePoseWidgetFactory()
